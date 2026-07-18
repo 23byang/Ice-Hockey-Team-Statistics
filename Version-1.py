@@ -19,16 +19,14 @@ def match_history(database):
         
 def team_statistics(database):
     found = False
-    team = input("What is the name of the team you would like to see? ")
+    team = input("What is the name of the team you would like to see? ").strip().lower()
     for teams in database:
-        if team == teams["Team 1 (Home)"]:
+        if team == teams["Team 1 (Home)"].strip().lower():
             print(clean_text(teams))
             found = True
-            break
-        elif team == teams["Team 2 (Away)"]:
+        elif team == teams["Team 2 (Away)"].strip().lower():
             print(clean_text(teams))
             found = True
-            break #talk about how breaks so that does not print all games.
     if not found:
         print("Sorry, the team cannot be found in the database.")
 
