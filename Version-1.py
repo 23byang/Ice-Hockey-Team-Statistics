@@ -14,8 +14,10 @@ def clean_text(text):
     clean_text = str(text).replace('""', "") # Check with Mr Harding
     return clean_text
 def match_history(database):
+    tally = 1
     for game in database:
-        print(clean_text(game))#when building game id counter talk about utility for remove function
+        print(f"{tally}. {clean_text(game)}")#when building game id counter talk about utility for remove function
+        tally += 1
         
 def team_statistics(database):
     found = False
@@ -30,7 +32,48 @@ def team_statistics(database):
     if not found:
         print("Sorry, the team cannot be found in the database.")
 
-    
+def add_match(database):
+    date = input("Enter Date of Game (dd/mm/yy): ")
+    home_team = input("Enter Name of Home Team: ")
+    away_team = input("Enter Name of Away Team: ")
+    extra_time_value = True
+    try:
+        home_score = int(input("Enter the Score of the Home Team: "))
+        away_score = int(input("Enter the score of the Away Team: "))
+    except ValueError:
+        print("Invalid Input, Match Not Added.")
+        return
+    while True:
+        extra_time = input("Did the game require extra time e.g OT or SO (Yes/No)").lower()
+        if extra_time == "yes":
+            extra_time_value == True
+            break
+        elif extra_time == "no":
+            extra_time_value == False
+            break
+        else: 
+            print("Invalid Option") 
+    new_game = {"Game Date dd/mm/yy" : date, "Team 1 (Home)" : home_team, "Team 2 (Away)" : away_team, "Team 1 Score" : home_score, "Team 2 Score" : away_score, "OT/SO?": extra_time_value}
+    database.append(new_game)
+    print("Match has been added to the database.")
+
+def remove_match(database):
+    tally = 0
+    match_history(database)
+    if database == []:
+        print("Match Database is empty, returning to main menu.")
+    else:
+        try: 
+            choice = int(input("Which match would you like to remove 1,2,3... etc."))
+            if choice not in range(1, tally + 1):
+                print("Invalid Option, please input a positive integer corresponding to your desired choice.")
+            else:
+                database.pop(choice - 1)
+                print("Item removed successfully.")
+        except ValueError:
+            print("Invalid Option, please input a positive integer corresponding to your desired choice.")
+
+
 
 def menu_display():
     print("Welcome To The Ice Hockey Database!")
