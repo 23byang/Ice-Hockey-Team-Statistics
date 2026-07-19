@@ -18,8 +18,47 @@ def match_history(database):
     for game in database:
         print(f"{tally}. {clean_text(game)}")#when building game id counter talk about utility for remove function
         tally += 1
+
+def get_points(team):
+    return team[1]
+
+def view_rank(database):
+    team_points = {}
+    for game in database:
+        team_points[game["Team 1 (Home)"]] = 0
+        team_points[game["Team 2 (Away)"]] = 0
+    for game in database:
+
+        score_1 = game["Team 1 Score"]
+        score_2 = game["Team 2 Score"]
+        ot_or_so = game["OT/SO?"]
+        if score_1 > score_2:
+            if ot_or_so:
+                team_points[game["Team 1 (Home)"]] += 2
+                team_points[game["Team 2 (Away)"]] += 1
+            else:
+                team_points[game["Team 1 (Home)"]] += 3
+                team_points[game["Team 2 (Away)"]] += 0
+        if score_2 > score_1:
+            if ot_or_so:
+                team_points[game["Team 2 (Away)"]] += 2
+                team_points[game["Team 1 (Home)"]] += 1
+            else:
+                team_points[game["Team 2 (Away)"]] += 3
+                team_points[game["Team 1 (Home)"]] += 0
+    temp_list = list(team_points.items())
+    temp_list.sort(key=get_points, reverse=True)
+    print(f"\n{'Rank'} | {'Team'} | {'Points'}")
+    print("-" * 40)
+    rank = 1
+    for item in temp_list:
+        team_name = item[0]
+        points_value = item[1]
+        print(f"{rank} | {team_name} | {points_value}")
+        rank += 1        
+
         
-def team_statistics(database):
+def team_matches(database):
     found = False
     team = input("What is the name of the team you would like to see? ").strip().lower()
     for teams in database:
@@ -82,7 +121,7 @@ def menu_display():
     print("3. Remove A Match ")
     print("4. View Match History ")
     print("5. Exit Program ")
-    print("6. View Team Statistics ")
+    print("6. View Team Match History ")
 
 
 def menu_function():
@@ -93,7 +132,7 @@ def menu_function():
                 choice = float(input("What would you like to do? (1-6)"))
                 choice = int(choice)  # Check with Mr Harding
                 if choice == 6:
-                    team_statistics(game_database)
+                    team_matches(game_database)
                 elif choice == 5:
                     print("Exiting Program.")
                     exit()
