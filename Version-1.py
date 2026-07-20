@@ -10,17 +10,19 @@ game_database = [{"Game Date dd/mm/yy" : "22/02/24", "Team 1 (Home)" : "Carolina
     {"Game Date dd/mm/yy" : "15/10/24", "Team 1 (Home)" : "Edmonton Oilers", "Team 2 (Away)" : "Philadelphia Flyers", "Team 1 Score" : 4, "Team 2 Score" : 3, "OT/SO?": True},
     {"Game Date dd/mm/yy" : "07/04/26", "Team 1 (Home)" : "Boston Bruins", "Team 2 (Away)" : "Carolina Hurricanes", "Team 1 Score" : 5, "Team 2 Score" : 6, "OT/SO?": True}]
 
-def clean_text(text):
-    clean_text = str(text).replace('""', "") # Check with Mr Harding
-    return clean_text
+
 def match_history(database):
     tally = 1
     for game in database:
-        print(f"{tally}. {clean_text(game)}")#when building game id counter talk about utility for remove function
+        print(f"\n\nGame #{tally} - Game Details:")#when building game id counter talk about utility for remove function
+        for key, value in game.items():
+            print(f"{key}: {value}", end=", ")
         tally += 1
+
 
 def get_points(team):
     return team[1]
+
 
 def view_rank(database):
     team_points = {}
@@ -57,33 +59,48 @@ def view_rank(database):
         print(f"{rank} | {team_name} | {points_value}")
         rank += 1        
 
-        
+
+
 def team_matches(database):
     found = False
     team = input("What is the name of the team you would like to see? ").strip().lower()
+    tally = 1
     for teams in database:
         if team == teams["Team 1 (Home)"].strip().lower():
-            print(clean_text(teams))
-            found = True
+            print(f"\n\nGame #{tally} - Game Details:")
+            for key, value in teams.items():
+                print(f"{key}: {value}", end=", ")
+                found = True
+                tally += 1
         elif team == teams["Team 2 (Away)"].strip().lower():
-            print(clean_text(teams))
-            found = True
+            print(f"\n\nGame #{tally} - Game Details:") # Check if function should be made
+            for key, value in teams.items():
+                print(f"{key}: {value}", end=", ")
+                found = True
+                tally += 1
     if not found:
         print("Sorry, the team cannot be found in the database.")
+
 
 def add_match(database):
     date = input("Enter Date of Game (dd/mm/yy): ")
     home_team = input("Enter Name of Home Team: ")
     away_team = input("Enter Name of Away Team: ")
     extra_time_value = True
+
     try:
-        home_score = int(input("Enter the Score of the Home Team: "))
-        away_score = int(input("Enter the score of the Away Team: "))
+        while True:
+            home_score = int(input("Enter the Score of the Home Team: "))
+            away_score = int(input("Enter the score of the Away Team: "))
+            if home_score == away_score:
+                print("Invalid Option, both scores cannot be equal.")
+            else:
+                break
     except ValueError:
         print("Invalid Input, Match Not Added.")
         return
     while True:
-        extra_time = input("Did the game require extra time e.g OT or SO (Yes/No)").lower()
+        extra_time = input("Did the game require extra time e.g OT or SO (Yes/No) ").lower()
         if extra_time == "yes":
             extra_time_value == True
             break
@@ -95,6 +112,7 @@ def add_match(database):
     new_game = {"Game Date dd/mm/yy" : date, "Team 1 (Home)" : home_team, "Team 2 (Away)" : away_team, "Team 1 Score" : home_score, "Team 2 Score" : away_score, "OT/SO?": extra_time_value}
     database.append(new_game)
     print("Match has been added to the database.")
+
 
 def remove_match(database):
     tally = 0
@@ -115,7 +133,8 @@ def remove_match(database):
 
 
 def menu_display():
-    print("Welcome To The Ice Hockey Database!")
+    print("\n----------------------------------------------------------")
+    print("\nWelcome To The Ice Hockey Database!")
     print("1. View Ranks Of Teams") # ranks based off of Win = 3 pt, Loss = 0 pt, OTW = 2 pt, OTL = 1 pt
     print("2. Add A Match ")
     print("3. Remove A Match ")
@@ -129,8 +148,8 @@ def menu_function():
         menu_display()
         while True:
             try:
-                choice = float(input("What would you like to do? (1-6)"))
-                choice = int(choice)  # Check with Mr Harding
+                choice = int(input("What would you like to do? (1-6) "))
+
                 if choice == 6:
                     team_matches(game_database)
                 elif choice == 5:
@@ -149,6 +168,8 @@ def menu_function():
                     continue
                 break
             except ValueError:
-                print("Invalid choice, please input the corresponding number to you choice from 1-6.")
+                print("Invalid choice, please input the corresponding number to you choice from 1-6. Ensure that it does not have syntax(symbols) and is typed as a number.")
                 continue
+
+
 menu_function()
