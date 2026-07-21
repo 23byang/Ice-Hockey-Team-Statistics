@@ -73,13 +73,13 @@ def add_match(database):
         else:
             break
     while True:
-        home_team = input("Enter Name of Home Team: ")
+        home_team = input("Enter Name of Home Team: ").title()
         if home_team == "":
             print("Invalid Option, please input the name of the home team")
         else:
             break
     while True:
-        away_team = input("Enter Name of Away Team: ")
+        away_team = input("Enter Name of Away Team: ").title()
         if away_team == "":
             print("Invalid Option, please input the name of the away team")
         else:
