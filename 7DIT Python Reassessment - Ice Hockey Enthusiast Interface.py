@@ -90,6 +90,10 @@ def add_match(database):
             away_score = int(input("Enter the score of the Away Team: "))
             if home_score == away_score:
                 print("Invalid Option, both scores cannot be equal.")
+            elif home_score < 0:
+                print("Invalid Option, home score can be negative")
+            elif away_score < 0:
+                print("Invalid Option, away score can be negative")
             else:
                 break
     except ValueError:
