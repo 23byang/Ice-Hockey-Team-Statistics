@@ -21,14 +21,6 @@ def clean_text(database, tally):
         print(f"{key}: {value}", end=", ")
 
 
-def match_history(database):
-    """This function allows users to look at the entire database's match history."""
-    tally = 1
-    for game in database:
-        clean_text(game, tally)
-        tally += 1
-
-
 def points_extractor(team):
     """This function facilitates the sort function by extracting the points from each team so that the program can sort the teams in the database."""
     return team[1]
@@ -69,25 +61,6 @@ def view_rank(database):
         points_value = item[1]
         print(f"{rank} | {team_name} | {points_value}")
         rank += 1
-
-
-def team_matches(database):
-    """This function allows users to track the games of specific teams."""
-    found = False
-    team = input("What is the name of the team you would like to see? ").strip().lower()
-    tally = 1
-    for teams in database:
-        if team == teams["Team 1 (Home)"].strip().lower():
-            clean_text(teams, tally)
-            tally += 1
-            found = True
-
-        elif team == teams["Team 2 (Away)"].strip().lower():
-            clean_text(teams, tally)
-            tally += 1
-            found = True
-    if not found:
-        print("Sorry, the team cannot be found in the database.")
 
 
 def add_match(database):
@@ -155,6 +128,33 @@ def remove_match(database):
                 print("Item removed successfully.")
         except ValueError:
             print("Invalid Option, please input a positive integer corresponding to your desired choice.")
+
+
+def match_history(database):
+    """This function allows users to look at the entire database's match history."""
+    tally = 1
+    for game in database:
+        clean_text(game, tally)
+        tally += 1
+
+
+def team_matches(database):
+    """This function allows users to track the games of specific teams."""
+    found = False
+    team = input("What is the name of the team you would like to see? ").strip().lower()
+    tally = 1
+    for teams in database:
+        if team == teams["Team 1 (Home)"].strip().lower():
+            clean_text(teams, tally)
+            tally += 1
+            found = True
+
+        elif team == teams["Team 2 (Away)"].strip().lower():
+            clean_text(teams, tally)
+            tally += 1
+            found = True
+    if not found:
+        print("Sorry, the team cannot be found in the database.")
 
 
 def menu_display():
